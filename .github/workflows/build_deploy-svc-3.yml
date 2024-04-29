@@ -50,12 +50,7 @@ jobs:
           docker build -t beknazar007/service-3:${{ github.sha }} .
           docker push beknazar007/service-3:${{ github.sha }}
 
-      - name: Deploy to Kubernetes
-        uses: azure/k8s-deploy@v1
-        with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-          namespace: production
-          images: beknazar007/service-3:${{ github.sha }}
+
   deploy_dev:
     needs: build
     if: github.event.pull_request.base.ref == 'development'
