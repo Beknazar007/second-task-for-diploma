@@ -48,6 +48,7 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
+          cd ./service-1
           docker build -t beknazar007/service-1:${{ github.sha }} .
           docker push beknazar007/service-1:${{ github.sha }}
   deploy_dev:
