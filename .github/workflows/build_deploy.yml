@@ -36,7 +36,7 @@ jobs:
           echo "Deploying version: $version"
 
           # Deploy to Maven repository
-          mvn --batch-mode deploy -DskipTests --settings ../settings.xml
+          mvn --batch-mode deploy -DskipTests 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
