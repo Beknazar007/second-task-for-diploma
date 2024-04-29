@@ -1,8 +1,7 @@
 # Use an official OpenJDK runtime as the base image
 FROM openjdk:17-slim
 
-# Set the working directory in the container
-WORKDIR /app
+
 
 # Copy the built JAR file from your local machine to the container
 COPY target/*.jar app.jar
