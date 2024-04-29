@@ -1,12 +1,12 @@
 name: Build and deploy Service 1
 
 on:
-  push:
+  pull_request:
     branches:
       - development
       - main
     paths:
-      - "service-1"
+      - "service-1/**"
   workflow_dispatch:
 
 jobs:
@@ -37,8 +37,6 @@ jobs:
           version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "Deploying version: $version"
 
-          # Deploy to Maven repository
-          mvn --batch-mode deploy -DskipTests 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -50,15 +48,9 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
+          cd ./service-1
           docker build -t beknazar007/service-1:${{ github.sha }} .
           docker push beknazar007/service-1:${{ github.sha }}
-
-      - name: Deploy to Kubernetes
-        uses: azure/k8s-deploy@v1
-        with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-          namespace: production
-          images: beknazar007/service-1:${{ github.sha }}
   deploy_dev:
     needs: build
     if: github.event.pull_request.base.ref == 'development'

@@ -1,17 +1,17 @@
-# CI/CD Pipeline for Build and Deployment
+# CI/CD Pipeline for Build and Deploy Service 1
 
-This CI/CD pipeline automates the build and deployment process for CloudWorks Solutions' services. The pipeline consists of several jobs that build the application, create Docker images, and deploy them to Kubernetes clusters in different environments (development, QA, and production).
+This CI/CD pipeline automates the build and deployment process for Service 1 in CloudWorks Solutions' codebase. The pipeline is triggered on pull requests to the `development` and `main` branches, specifically when changes are made to files within the `service-1` directory. Additionally, it can be manually triggered through workflow dispatch.
 
 ## Workflow Structure
 
-The pipeline is triggered on pushes to the `development` and `main` branches, as well as manually through workflow dispatch.
+The pipeline consists of several jobs responsible for building the application, creating Docker images, and deploying them to Kubernetes clusters in different environments (development, QA, and production).
 
 ### Jobs
 
-1. **build**: Builds the application, creates a Docker image, and pushes it to Docker Hub.
-2. **deploy_dev**: Deploys the application to the development environment.
-3. **deploy_qa**: Deploys the application to the QA environment.
-4. **deploy_prod**: Deploys the application to the production environment.
+1. **build**: Builds Service 1, creates a Docker image, and pushes it to Docker Hub.
+2. **deploy_dev**: Deploys Service 1 to the development environment.
+3. **deploy_qa**: Deploys Service 1 to the QA environment.
+4. **deploy_prod**: Deploys Service 1 to the production environment.
 
 ## Workflow Steps
 
@@ -19,32 +19,31 @@ The pipeline is triggered on pushes to the `development` and `main` branches, as
 
 - **Checkout code**: Clones the repository's codebase using the `actions/checkout` action.
 - **Set up JDK 17**: Configures the Java Development Kit (JDK) version 17 using the `actions/setup-java` action.
-- **Build and Deploy with Maven**: Builds the application using Maven, fetches the project version, and deploys the artifacts to a Maven repository.
+- **Build and Deploy with Maven**: Builds Service 1 using Maven, fetches the project version, and deploys the artifacts to a Maven repository.
 - **Login to Docker Hub**: Authenticates with Docker Hub using Docker Hub credentials stored as GitHub Secrets.
-- **Build and tag Docker image**: Builds a Docker image for the application, tags it with the GitHub SHA, and pushes it to Docker Hub.
+- **Build and tag Docker image**: Builds a Docker image for Service 1, tags it with the GitHub SHA, and pushes it to Docker Hub.
 - **Deploy to Kubernetes**: Deploys the Docker image to a Kubernetes cluster in the production environment.
 
 ### 2. Deployment Jobs (dev, qa, prod)
 
 - **Configure AWS credentials**: Authenticates with AWS using AWS credentials stored as GitHub Secrets.
-- **Update Kubernetes deployment**: Updates the Kubernetes deployment with the newly built Docker image, ensuring the application is up-to-date.
+- **Update Kubernetes deployment**: Updates the Kubernetes deployment with the newly built Docker image, ensuring Service 1 is up-to-date.
 - **Rollout status check**: Checks the status of the Kubernetes deployment to ensure the rollout is successful.
 
 ## Environment Specificity
 
-- **Development Environment (dev)**: Used for testing and development purposes. The `deploy_dev` job is triggered when changes are pushed to the `development` branch.
+- **Development Environment (dev)**: Used for testing and development purposes. The `deploy_dev` job is triggered when changes are made on the `development` branch and Service 1 is updated.
 - **QA Environment (qa)**: Used for quality assurance testing.
-- **Production Environment (prod)**: The live environment where the application is publicly available.
+- **Production Environment (prod)**: The live environment where Service 1 is publicly available.
 
 ## Trigger Conditions
 
-- The deployment jobs (`deploy_dev`, `deploy_qa`, `deploy_prod`) are triggered only when changes are pushed to the `main` branch or the `development` branch for the `deploy_dev` job.
+- The pipeline is triggered on pull requests to the `development` and `main` branches, specifically when changes are made to files within the `service-1` directory.
 
 ## Security Considerations
 
 - Ensure that sensitive information such as Docker Hub and AWS credentials are securely stored as GitHub Secrets.
 - Review and restrict access to GitHub Secrets to authorized personnel.
-
 
 
 
