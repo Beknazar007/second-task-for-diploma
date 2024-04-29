@@ -62,7 +62,7 @@ jobs:
           git checkout -b $release_branch origin/main
           for folder in "${folders[@]}"; do
             # Change directory
-            git checkout development -- $folder
+            git checkout origin/development -- $folder
             cd $folder || exit 1
             version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT/-RELEASE/g')
             echo "version=${version}" >> $GITHUB_OUTPUT
