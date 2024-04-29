@@ -8,17 +8,17 @@ on:
         required: true
         default: '1.0.0-RELEASE' 
       service-1:
-        description: 'Build Action A'
+        description: 'Build Service 1'
         required: true
         default: true
         type: boolean
       service-2:
-        description: 'Build Action B'
+        description: 'Build Service 2'
         required: true
         default: false
         type: boolean
       service-3:
-        description: 'Build Action C'
+        description: 'Build Service 3'
         required: true
         default: false
         type: boolean
@@ -36,7 +36,7 @@ jobs:
       - name: Update versions
         run: |
           release_version=${{ github.event.inputs.release_version }}
-          release_branch="release/${release_version}"
+          release_branch="${release_version}"
 
           # Initialize an empty array to store folder names
           folders=()
