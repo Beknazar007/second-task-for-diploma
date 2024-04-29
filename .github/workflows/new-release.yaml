@@ -1,0 +1,75 @@
+name: Update 1
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version'
+        required: true
+        default: '1.0.0-RELEASE' 
+      service-1:
+        description: 'Build Action A'
+        required: true
+        default: true
+        type: boolean
+      service-2:
+        description: 'Build Action B'
+        required: true
+        default: false
+        type: boolean
+      service-3:
+        description: 'Build Action C'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  update-versions-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Update versions
+        run: |
+          release_version=${{ github.event.inputs.release_version }}
+          release_branch="release/${release_version}"
+
+          # Initialize an empty array to store folder names
+          folders=()
+          
+          # Check if service-1 is true, add it to the folders list
+          if [ "${{ github.event.inputs.service-1 }}" == "true" ]; then
+            folders+=("service-1")
+          fi
+          
+          # Check if service-2 is true, add it to the folders list
+          if [ "${{ github.event.inputs.service-2 }}" == "true" ]; then
+            folders+=("service-2")
+          fi
+          
+          # Check if service-3 is true, add it to the folders list
+          if [ "${{ github.event.inputs.service-3 }}" == "true" ]; then
+            folders+=("service-3")
+          fi
+          
+          git config --global user.email "saitovbeknazar6@gmail.com"
+          git config --global user.name "beknazar007"
+          git fetch --all          # Loop through selected directories
+          git checkout -b $release_branch origin/main
+          for folder in "${folders[@]}"; do
+            # Change directory
+            git checkout development -- $folder
+            cd $folder || exit 1
+            version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT/-RELEASE/g')
+            echo "version=${version}" >> $GITHUB_OUTPUT
+            mvn  versions:set -DnewVersion=${version}
+            git add .
+            git commit -m "Release version changed to $version in $folder"
+            cd ..
+          done
+          git push https://beknazar007:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git $release_branch
+
