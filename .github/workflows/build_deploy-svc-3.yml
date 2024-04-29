@@ -1,15 +1,17 @@
-name: Build and deploy 
+name: Build and deploy Service 3
 
 on:
   push:
     branches:
       - development
       - main
+    paths:
+      - "service-3"
   workflow_dispatch:
 
 jobs:
   build:
-    name: Deploy Service 1
+    name: Build Service 3
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -59,7 +61,7 @@ jobs:
           images: beknazar007/service-3:${{ github.sha }}
   deploy_dev:
     needs: build
-    if: github.event.pull_request.base.ref == 'main'
+    if: github.event.pull_request.base.ref == 'development'
     runs-on: ubuntu-latest
     environment: dev
     steps:
