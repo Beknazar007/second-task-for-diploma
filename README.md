@@ -1,3 +1,6 @@
+Video is below click photo
+
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://drive.google.com/file/d/1qvgR5tFpDzjsHtj5pEjzGq8gpmiwlohA/view?usp=sharing)
 # CI/CD Pipeline for Build and Deploy Service 1
 
 This CI/CD pipeline automates the build and deployment process for Service 1 in CloudWorks Solutions' codebase. The pipeline is triggered on pull requests to the `development` and `main` branches, specifically when changes are made to files within the `service-1` directory. Additionally, it can be manually triggered through workflow dispatch.
