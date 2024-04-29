@@ -36,9 +36,6 @@ jobs:
           # Fetch version
           version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "Deploying version: $version"
-
-          # Deploy to Maven repository
-          mvn --batch-mode deploy -DskipTests 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
